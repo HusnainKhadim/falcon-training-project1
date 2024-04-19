@@ -1,0 +1,12 @@
+<h2>Admin Pannel</h2>
+
+<form method="POST">
+{% csrf_token %}
+    <label for="optionSelect">Choose Option</label>
+    <select type="text" id="optionSelect" name="optionSelect">
+        <option selected>inventory status</option>
+        <option>overdue equipments</option>
+    </select>
+    <br><br>
+    <input type="submit" value="Submit!"/>
+</form>

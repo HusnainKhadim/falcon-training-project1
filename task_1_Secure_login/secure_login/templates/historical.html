@@ -1,0 +1,13 @@
+<h3>Your Historical Bookings are: </h3>
+
+
+{% for his_eq in historical %}
+
+<li><b>Equipment: </b>{{his_eq}} <b>Type: </b>{{his_eq.booked_equipment.equipment_id.euipment_type}}</li>
+
+<a href="/request_again/{{ his_eq.id }}">
+    Request
+</a>
+
+
+{% endfor %}

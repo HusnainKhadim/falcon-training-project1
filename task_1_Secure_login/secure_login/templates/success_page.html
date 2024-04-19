@@ -1,0 +1,46 @@
+<h2>Welcome to the Equipments Page!</h2>
+
+<h3>You can also search with keywords: </h3>
+
+
+
+<form method="POST">
+    {% csrf_token %}
+        <label for="optionSelect">Choose Option</label>
+        <select type="text" id="optionSelect" name="optionSelect">
+            <option selected>id</option>
+            <option>name</option>
+            <option>type</option>
+            <input type="text" name="query" placeholder="Enter your search query">
+        </select>
+        <br><br>
+        <input type="submit" value="Submit!"/>
+</form>
+
+
+
+<h3>You can filter equipments based on the keywords below: </h3>
+<p><b>By Availability:</b>    <a href="{% url 'filter_equipments' 'availability' %}">Availability</a>  <b>By Types:</b>  <a href="{% url 'filter_equipments' 'Pc' %}">pc</a>, <a href="{% url 'filter_equipments' 'Electronics' %}">electronics</a>,     <a href="{% url 'filter_equipments' 'Book' %}">books</a> 
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+<b>List Of Equipments:</b>
+
+{% for book in books %}
+<br>
+<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li>  
+<a href="{% url 'request_for_book' book.id %}">Request</a>
+<br>
+{% endfor %}
+
+<a href="{% url 'users_reservations' %}">You can see your Bookings Here</a>
+<br>
+<a href="{% url 'logout' %}">Logout</a>
+<br>
+
+<a href="{% url 'admin_panel' %}">Admin Page</a>

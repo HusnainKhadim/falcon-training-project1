@@ -1,0 +1,12 @@
+<h2>You can manage requests here!</h2>
+
+{% for user in pending_users %}
+
+<li><b>Id:</b>{{user.pk}},<b>Name: </b>{{user}}</li>
+
+<a href="{% url 'manage_requests' user.pk 'accept' %}">Accept</a>     <br>    <a href="{% url 'manage_requests' user.pk 'cancel' %}">Cancel</a>
+
+<br>
+<br>
+
+{% endfor %}

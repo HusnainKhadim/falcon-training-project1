@@ -1,0 +1,14 @@
+<h3>Your current requests are: </h3>
+
+{% for equipment in booked_equipments %}
+
+<li><b>Equipment: </b>{{ equipment }} <b>Type: </b>{{equipment.equipment_id.euipment_type}}</li>
+<a href="/cancel_request/{{ equipment.id }}">Cancel</a>
+
+<br>
+{% endfor %}
+
+
+<h3>You can see your Historical Bookings here: </h3>
+
+<a href="{% url 'historical_bookings' %}">Here</a>
