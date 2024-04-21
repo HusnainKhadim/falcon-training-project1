@@ -28,37 +28,7 @@ def signup(request):
         form = SignupForm()
 
     return render(request, 'signup.html', {'form':form})
-
-
-@login_required
-def manage_requests(request, id, accept_cancel):
-
-    pending_user = PendingUsers.objects.get(id=id)
-
-    if accept_cancel == 'accept':
-
-        user = User.objects.create_user(username=pending_user.username, password=pending_user.password)
-        user.is_active
-        user.save()
-
-        pending_user.delete()
     
-    if accept_cancel == 'cancel':
-        
-        pending_user.delete()
-
-    users = PendingUsers.objects.all()
-
-    count = PendingUsers.objects.all().count()
-
-    if count > 0 :
-        return render(request, 'users_requests.html',{'pending_users': users} )
-    else:
-        return redirect('signup')
-
-
-    
-
 
 def user_login(request):
 
@@ -72,17 +42,15 @@ def user_login(request):
             if user:
                 login(request, user)
                 
-                return render(request, 'success_page.html')   
+                return redirect('success_page')   
                    
     form = LoginForm()
     return render(request, 'login.html', {'form':form})
     
-@login_required    
+@login_required(login_url='/login/')  
 def success_page(request):
 
     if request.method == 'POST':
-
-        import pdb;pdb.set_trace()
 
         # import pdb;pdb.set_trace()
 
@@ -98,12 +66,11 @@ def success_page(request):
         else:
             books = Books.objects.filter(euipment_type=search_keyword)
             return render(request, 'success_page.html', {'books': books})
-    else:
-        books = Books.objects.filter(availabilty=True)
-        return render(request, 'success_page.html', {'books': books})
     
-    return render(request, 'success_page.html', {'books': books})
-
+    else:
+        books = Books.objects.all()
+        return render(request, 'success_page.html', {'books': books, 'book_type':'all'})
+    
 @login_required
 def users_reservations(request):
 
@@ -127,9 +94,29 @@ def cancel_request(request, id):
 
 
 @login_required
-def request_for_book(request, id):
+def request_for_all(request, id):
 
     book = Books.objects.get(pk=id)
+
+    if book.requested_or_not == True:
+        return render(request, "cannot_request.html")
+
+    book.requested_or_not = True
+    book.requested_user_id=request.user
+    book.availabilty=False
+    book.save()
+    
+    books = Books.objects.all()
+
+    return render(request, 'success_page.html', {'books':books, 'book_type': 'all'})
+
+@login_required
+def request_for_available(request, id):
+
+    book = Books.objects.get(pk=id)
+
+    if book.requested_or_not == True:
+        return render(request, "cannot_request.html")
 
     book.requested_or_not = True
     book.requested_user_id=request.user
@@ -138,7 +125,94 @@ def request_for_book(request, id):
     
     books = Books.objects.filter(availabilty=True)
 
-    return render(request, 'success_page.html', {'books':books})
+    return render(request, 'success_page.html', {'books':books, 'book_type': 'availability'})
+
+
+@login_required
+def request_for_Pc(request, id):
+
+    book = Books.objects.get(pk=id)
+
+    if book.requested_or_not == True:
+        return render(request, "cannot_request.html")
+
+    book.requested_or_not = True
+    book.requested_user_id=request.user
+    book.availabilty=False
+    book.save()
+    
+    books = Books.objects.filter(euipment_type = 'Pc')
+
+    return render(request, 'success_page.html', {'books':books, 'book_type': 'Pc'})
+
+
+@login_required
+def request_for_Electronics(request, id):
+
+    book = Books.objects.get(pk=id)
+
+    if book.requested_or_not == True:
+        return render(request, "cannot_request.html")
+
+    book.requested_or_not = True
+    book.requested_user_id=request.user
+    book.availabilty=False
+    book.save()
+    
+    books = Books.objects.filter(euipment_type = 'Electronics')
+
+    return render(request, 'success_page.html', {'books':books, 'book_type': 'Electronics'})
+
+
+@login_required
+def request_for_Book(request, id):
+
+    book = Books.objects.get(pk=id)
+
+    if book.requested_or_not == True:
+        return render(request, "cannot_request.html")
+
+    book.requested_or_not = True
+    book.requested_user_id=request.user
+    book.availabilty=False
+    book.save()
+    
+    books = Books.objects.filter(euipment_type = 'Book')
+
+    return render(request, 'success_page.html', {'books':books, 'book_type': 'Book'})
+
+
+@login_required
+def search_by_typing(request):
+    option = request.POST.get("optionSelect")
+    query = request.POST.get("query")
+
+    if option == 'type':
+
+        if query  == 'Book' or query == 'book':
+
+            books = Books.objects.filter(euipment_type='Book')
+            return render(request, 'success_page.html', {'books': books , 'book_type': 'Book'})
+        elif query == 'Pc' or query == 'pc':
+
+            books = Books.objects.filter(euipment_type='Pc')
+            return render(request, 'success_page.html', {'books': books , 'book_type': 'Pc'})
+        elif query == 'Electronics' or query == 'electronics':
+
+            books = Books.objects.filter(euipment_type='Electronics')
+            return render(request, 'success_page.html', {'books': books , 'book_type': 'Electronics'})
+    
+    elif option == 'id':
+
+        books = Books.objects.get(pk=query)
+        return render(request, 'success_page.html', {'books': books , 'book_type': 'all'})
+    
+    else:
+
+        books = Books.objects.filter(euipment_name = query)
+        return render(request, 'success_page.html', {'books': books , 'book_type': 'all'})
+
+
 
 
 @login_required
@@ -180,17 +254,27 @@ def request_again(request, id):
 @login_required
 def filter_equipments(request, keyword):
     
-    if keyword in ['Book', 'Electronics', 'Pc']:
+    if keyword  == 'Book':
 
-        books = Books.objects.filter(euipment_type=keyword)
-        
-        return render(request, 'success_page.html', {'books': books})
+        books = Books.objects.filter(euipment_type='Book')
+        return render(request, 'success_page.html', {'books': books , 'book_type': 'Book'})
+    elif keyword == 'Pc':
+        books = Books.objects.filter(euipment_type='Pc')
+        return render(request, 'success_page.html', {'books': books , 'book_type': 'Pc'})
+    elif keyword == 'Electronics':
+        books = Books.objects.filter(euipment_type='Electronics')
+        return render(request, 'success_page.html', {'books': books , 'book_type': 'Electronics'})
+    
+    elif keyword == 'all':
+
+        books = Books.objects.all()
+        return render(request, 'success_page.html', {'books': books , 'book_type': 'all'})
     
     elif keyword == 'availability':
 
         books = Books.objects.filter(availabilty = True)
 
-        return render(request, 'success_page.html', {'books': books})
+        return render(request, 'success_page.html', {'books': books , 'book_type': 'availability'})
     
     else:
 
@@ -260,9 +344,7 @@ def send_daily_email():
                 fail_silently=False,
                 )
 
-    
-    
-
+@login_required(login_url='/login/')  
 def user_logout(request):
     logout(request)
     return redirect('home')

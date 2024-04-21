@@ -53,6 +53,7 @@ class PendingUsers(models.Model):
 
     username = models.CharField(max_length=150)
     password = models.CharField(max_length=150)
+    approved = models.BooleanField(default=False, null=True, blank=True)
 
     class Meta:
         verbose_name = 'PendingUser'

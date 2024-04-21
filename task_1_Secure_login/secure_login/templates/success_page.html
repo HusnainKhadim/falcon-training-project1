@@ -4,23 +4,25 @@
 
 
 
-<form method="POST">
+<form method="POST" action="/search_by_typing/">
     {% csrf_token %}
-        <label for="optionSelect">Choose Option</label>
-        <select type="text" id="optionSelect" name="optionSelect">
-            <option selected>id</option>
-            <option>name</option>
-            <option>type</option>
-            <input type="text" name="query" placeholder="Enter your search query">
-        </select>
-        <br><br>
-        <input type="submit" value="Submit!"/>
+    <label for="optionSelect">Choose Option</label>
+    <select id="optionSelect" name="optionSelect">
+        <option value="id" selected>Id</option>
+        <option value="name">Name</option>
+        <option value="type">Type</option>
+    </select>
+    <br><br>
+    <input type="text" name="query" placeholder="Enter your search query">
+    <br><br>
+    <input type="submit" value="Search"/>
 </form>
 
 
 
+
 <h3>You can filter equipments based on the keywords below: </h3>
-<p><b>By Availability:</b>    <a href="{% url 'filter_equipments' 'availability' %}">Availability</a>  <b>By Types:</b>  <a href="{% url 'filter_equipments' 'Pc' %}">pc</a>, <a href="{% url 'filter_equipments' 'Electronics' %}">electronics</a>,     <a href="{% url 'filter_equipments' 'Book' %}">books</a> 
+<p><b>All: </b> <a href ="{% url 'filter_equipments' 'all' %}">All </a><b>By Availability:</b>    <a href="{% url 'filter_equipments' 'availability' %}">Availability</a>  <b>By Types:</b>  <a href="{% url 'filter_equipments' 'Pc' %}">pc</a>, <a href="{% url 'filter_equipments' 'Electronics' %}">electronics</a>,     <a href="{% url 'filter_equipments' 'Book' %}">books</a> 
 
 
 <br>
@@ -31,12 +33,58 @@
 
 <b>List Of Equipments:</b>
 
+{% if book_type == 'all' %}
+
+
 {% for book in books %}
 <br>
-<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li>  
-<a href="{% url 'request_for_book' book.id %}">Request</a>
+<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty %} Yes {% else %} No{% endif %}
+<a href="{% url 'request_for_all' book.id  %}">Request</a>
 <br>
 {% endfor %}
+
+
+{% elif book_type == 'availability' %}
+
+{% for book in books %}
+<br>
+<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+<a href="{% url 'request_for_available' book.id  %}">Request</a>
+<br>
+{% endfor %}
+
+{% elif book_type == 'Pc' %}
+
+{% for book in books %}
+<br>
+<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+<a href="{% url 'request_for_Pc' book.id  %}">Request</a>
+<br>
+{% endfor %}
+
+
+
+{% elif book_type == 'Electronics' %}
+
+{% for book in books %}
+<br>
+<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+<a href="{% url 'request_for_Electronics' book.id  %}">Request</a>
+<br>
+{% endfor %}
+
+{% elif book_type == 'Book' %}
+
+{% for book in books %}
+<br>
+<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+<a href="{% url 'request_for_Book' book.id  %}">Request</a>
+<br>
+{% endfor %}
+
+
+{% endif %}
+
 
 <a href="{% url 'users_reservations' %}">You can see your Bookings Here</a>
 <br>
