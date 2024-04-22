@@ -11,5 +11,5 @@ class SignupForm(UserCreationForm):
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
+    username = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'autocapitalize': 'off'}))
     password = forms.CharField(widget=forms.PasswordInput)

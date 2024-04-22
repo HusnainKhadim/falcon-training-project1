@@ -1,9 +1,50 @@
-<h1>Login Page</h1>
-<form method="POST">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Login</button>
-    <a href="{% url 'signup' %}">Create New Account</a>
-    <br>
-    <br>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script>
+        window.onload = function() {
+            document.getElementById('id_username').style.textTransform = 'none';
+        }
+    </script>
+</head>
+
+<body>
+
+  <section class="myform-area">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="form-area login-form">
+                    <div class="form-content">
+                        <h2>Login</h2>
+                        <br>
+                        <br>
+                        <br>
+                        <p>Explore a streamlined equipment booking platform tailored for students' study needs! From essential study tools like cameras and audio equipment to specialized gear for research projects, our platform offers seamless rentals to support your academic journey. With user-friendly browsing, flexible booking options, and dedicated customer support, finding the perfect equipment for your studies has never been easier. Start booking today and elevate your learning experience!</p>
+                    </div>
+                    <div class="form-input">
+                        <h2>Login Form</h2>
+                        <form method="POST">
+                          {% csrf_token %}
+                          {{ form.as_p }}
+                            <div class="myform-button">
+                                <button class="myform-btn" type="submit">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+
+</body>
+
+</html>

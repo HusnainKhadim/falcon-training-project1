@@ -37,6 +37,7 @@ def user_login(request):
         if form.is_valid():
             username = request.POST['username']
             password = request.POST['password']
+
             user = authenticate(username=username, password=password)
             # import pdb;pdb.set_trace()
             if user:
