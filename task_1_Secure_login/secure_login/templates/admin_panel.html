@@ -1,12 +1,26 @@
-<h2>Admin Pannel</h2>
-
-<form method="POST">
-{% csrf_token %}
-    <label for="optionSelect">Choose Option</label>
-    <select type="text" id="optionSelect" name="optionSelect">
-        <option selected>inventory status</option>
-        <option>overdue equipments</option>
-    </select>
-    <br><br>
-    <input type="submit" value="Submit!"/>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Admin Panel</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2>Admin Panel</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="optionSelect">Choose Option:</label>
+        <select id="optionSelect" name="optionSelect">
+            <option >Inventory Status</option>
+            <option >Overdue Equipments</option>
+        </select>
+        <br><br>
+        <input type="submit" value="Submit"/>
+    </form>
+</div>
+</body>
+</html>

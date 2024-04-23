@@ -1,0 +1,33 @@
+/* Add your custom styles here */
+.container {
+    margin-top: 20px;
+}
+
+.checkbox {
+    margin-bottom: 10px;
+}
+
+.input-group-btn.search-panel {
+    position: relative;
+    float: left;
+    width: 100%;
+}
+
+.input-group-btn.search-panel .btn {
+    width: 100%;
+}
+
+.input-group-btn.search-panel .btn span {
+    text-align: left;
+}
+
+.input-group-btn.search-panel .dropdown-menu {
+    left: 0;
+    right: auto;
+}
+
+.input-group-btn.search-panel .form-control {
+    width: 80%;
+    float: left;
+    border-radius: 0;
+}

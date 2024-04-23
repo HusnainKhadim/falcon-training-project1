@@ -12,6 +12,8 @@ def index(request):
     return render(request, 'index.html')
 
 def signup(request):
+
+    
     if request.method == 'POST':
 
         form = SignupForm(request.POST)
@@ -39,7 +41,6 @@ def user_login(request):
             password = request.POST['password']
 
             user = authenticate(username=username, password=password)
-            # import pdb;pdb.set_trace()
             if user:
                 login(request, user)
                 
@@ -52,8 +53,6 @@ def user_login(request):
 def success_page(request):
 
     if request.method == 'POST':
-
-        # import pdb;pdb.set_trace()
 
         search_type = request.POST.get('optionSelect')
         search_keyword = request.POST.get('query')
@@ -231,7 +230,7 @@ def request_again(request, id):
 
 
     for e in booked_equipments:
-        # import pdb;pdb.set_trace()
+
         if str(e) == str(his_book):
             
             return render(request, 'error_message.html')
@@ -247,7 +246,6 @@ def request_again(request, id):
 
 
     books = HistoricalBookings.objects.filter(user=request.user)
-    # import pdb;pdb.set_trace()
 
     return render(request, 'historical.html', {'historical':books})
 
@@ -289,8 +287,9 @@ def admin_panel(request):
 
         if request.method == 'POST':
             selected_option = request.POST.get('optionSelect')
+
             
-            if selected_option == 'inventory status':
+            if selected_option == 'Inventory Status':
                 items = Books.objects.all()
                 item_count = Books.objects.all().count()
                 return render(request, 'item_count.html', {'items':items, 'item_count': item_count})
@@ -344,6 +343,8 @@ def send_daily_email():
                 ['f2020266265@umt.edu.pk'],
                 fail_silently=False,
                 )
+
+
 
 @login_required(login_url='/login/')  
 def user_logout(request):
