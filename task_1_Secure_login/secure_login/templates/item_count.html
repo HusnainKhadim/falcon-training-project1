@@ -1,11 +1,22 @@
-
-<h2>In inventory we have total {{ item_count }} items left!</h2>
-<h3>Items available are : </h3>
-<br>
-
-{% for item in items %}
-<li>{{item}}</li>
-<br>
-{% endfor %}
-
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Inventory</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/inventory_count.css' %}">
+</head>
+<body>
+<div class="container">
+    <h2>In inventory we have total {{ item_count }} items left!</h2>
+    <h3>Items available are:</h3>
+    <ul>
+        {% for item in items %}
+        <li><b>Equipment: </b>{{ item }}   <b>Type: </b>{{item.euipment_type}}</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
+</html>

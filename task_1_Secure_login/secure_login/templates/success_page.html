@@ -1,94 +1,159 @@
-<h2>Welcome to the Equipments Page!</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Equipments Page</title>
+    <style>
+        body {
+            background-image: url('/static/images/success.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.7); /* lighter opacity */
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px; /* added margin */
+        }
+        .checkbox {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .equipment-list {
+            margin-top: 20px; /* added margin */
+        }
+        .equipment-item {
+            background-color: #f9f9f9; /* light gray background */
+            padding: 10px;
+            margin-bottom: 10px; /* added margin */
+            border-radius: 5px;
+        }
+        .equipment-item a {
+            color: #337ab7; /* blue link color */
+            text-decoration: none;
+        }
+        .search-form {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* align to the right */
+        }
+        .search-form select,
+        .search-form input[type="text"],
+        .search-form input[type="submit"] {
+            margin-right: 50px;
+            height: 35px; /* equal height */
+            border-radius: 5px; /* rounded corners */
+        }
+        .search-form input[type="text"] {
+            width: 400px; /* increased width */
+        }
+        .search-form input[type="submit"] {
+            border: none; /* remove border */
+            background-color: #337ab7; /* blue button */
+            color: white; /* white text */
+            padding: 8px 15px; /* padding */
+        }
+    </style>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</head>
+<body>
 
-<h3>You can also search with keywords: </h3>
+<div class="container">
+    <div class="row">    
+        <div class="col-xs-2">
+            <h4>Filter By:</h4>
+            <li>
+                <a href ="{% url 'filter_equipments' 'all' %}">All </a>
+            </li>
+            <li>
+                <a href="{% url 'filter_equipments' 'availability' %}">Availability</a>
+            </li>
+            <li>
+                <a href="{% url 'filter_equipments' 'Pc' %}">pc</a>
+            </li>
+            <li>
+                <a href="{% url 'filter_equipments' 'Electronics' %}">Electronics</a>
+            </li>
+            <li>
+                <a href="{% url 'filter_equipments' 'Book' %}">books</a> 
+            </li>
+        </div>
 
+        <div class="col-xs-8">
+            <form method="POST" action="/search_by_typing/" class="search-form">
+                {% csrf_token %}
+            
+                <select id="optionSelect" name="optionSelect">
+                    <option value="id">Id</option>
+                    <option value="name" selected>Name</option>
+                    <option value="type">Type</option>
+                </select>
+                <input type="text" name="query" placeholder="Enter your search query">
+                <input type="submit" value="Search"/>
+            </form>
+        </div>
+	</div>
+</div>
 
-
-<form method="POST" action="/search_by_typing/">
-    {% csrf_token %}
-    <label for="optionSelect">Choose Option</label>
-    <select id="optionSelect" name="optionSelect">
-        <option value="id" selected>Id</option>
-        <option value="name">Name</option>
-        <option value="type">Type</option>
-    </select>
-    <br><br>
-    <input type="text" name="query" placeholder="Enter your search query">
-    <br><br>
-    <input type="submit" value="Search"/>
-</form>
-
-
-
-
-<h3>You can filter equipments based on the keywords below: </h3>
-<p><b>All: </b> <a href ="{% url 'filter_equipments' 'all' %}">All </a><b>By Availability:</b>    <a href="{% url 'filter_equipments' 'availability' %}">Availability</a>  <b>By Types:</b>  <a href="{% url 'filter_equipments' 'Pc' %}">pc</a>, <a href="{% url 'filter_equipments' 'Electronics' %}">electronics</a>,     <a href="{% url 'filter_equipments' 'Book' %}">books</a> 
-
-
-<br>
-<br>
-<br>
-<br>
-
-
-<b>List Of Equipments:</b>
+<div class="container equipment-list">
+    
+<h3>List Of Equipments:</h3>
 
 {% if book_type == 'all' %}
-
-
-{% for book in books %}
-<br>
-<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty %} Yes {% else %} No{% endif %}
-<a href="{% url 'request_for_all' book.id  %}">Request</a>
-<br>
-{% endfor %}
-
-
+    {% for book in books %}
+        <br>
+        <li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty %} Yes {% else %} No{% endif %}
+        <a href="{% url 'request_for_all' book.id  %}">Request</a>
+        <br>
+    {% endfor %}
 {% elif book_type == 'availability' %}
-
-{% for book in books %}
-<br>
-<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
-<a href="{% url 'request_for_available' book.id  %}">Request</a>
-<br>
-{% endfor %}
-
+    {% for book in books %}
+        <br>
+        <li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+        <a href="{% url 'request_for_available' book.id  %}">Request</a>
+        <br>
+    {% endfor %}
 {% elif book_type == 'Pc' %}
-
-{% for book in books %}
-<br>
-<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
-<a href="{% url 'request_for_Pc' book.id  %}">Request</a>
-<br>
-{% endfor %}
-
-
-
+    {% for book in books %}
+        <br>
+        <li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+        <a href="{% url 'request_for_Pc' book.id  %}">Request</a>
+        <br>
+    {% endfor %}
 {% elif book_type == 'Electronics' %}
-
-{% for book in books %}
-<br>
-<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
-<a href="{% url 'request_for_Electronics' book.id  %}">Request</a>
-<br>
-{% endfor %}
-
+    {% for book in books %}
+        <br>
+        <li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+        <a href="{% url 'request_for_Electronics' book.id  %}">Request</a>
+        <br>
+    {% endfor %}
 {% elif book_type == 'Book' %}
-
-{% for book in books %}
-<br>
-<li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
-<a href="{% url 'request_for_Book' book.id  %}">Request</a>
-<br>
-{% endfor %}
-
-
+    {% for book in books %}
+        <br>
+        <li><b>Type: </b>{{ book.euipment_type }}  <b> Name: </b>{{ book.euipment_name }}</li> <b>Available: </b>{% if book.availabilty%} Yes {% else %} No{% endif%}
+        <a href="{% url 'request_for_Book' book.id  %}">Request</a>
+        <br>
+    {% endfor %}
 {% endif %}
 
+</div>
 
-<a href="{% url 'users_reservations' %}">You can see your Bookings Here</a>
-<br>
-<a href="{% url 'logout' %}">Logout</a>
-<br>
 
-<a href="{% url 'admin_panel' %}">Admin Page</a>
+<div class="container links-section">
+    <a href="{% url 'users_reservations' %}" class="custom-link">You can see your Bookings Here</a>
+    <br>
+    <a href="{% url 'logout' %}" class="custom-link">Logout</a>
+    <br>
+    <a href="{% url 'admin_panel' %}" class="custom-link">Admin Page</a>
+</div>
+
+
+</body>
+</html>
